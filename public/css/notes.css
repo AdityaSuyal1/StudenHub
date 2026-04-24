@@ -1,0 +1,6 @@
+/* notes.css */
+.note-color-purple { border-left: 4px solid var(--primary); }
+.note-color-green  { border-left: 4px solid var(--success); }
+.note-color-yellow { border-left: 4px solid var(--warning); }
+.note-color-red    { border-left: 4px solid var(--danger); }
+.note-color-blue   { border-left: 4px solid var(--accent); }

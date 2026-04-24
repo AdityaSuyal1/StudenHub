@@ -1,0 +1,137 @@
+/* analytics.css — StudenHub Analytics Page */
+
+.analytics-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.an-card {
+  background: var(--card-bg, #1e1e2e);
+  border: 1px solid var(--border, rgba(255,255,255,0.07));
+  border-radius: 14px;
+  padding: 20px 22px 18px;
+  transition: box-shadow 0.2s;
+}
+
+.an-card:hover {
+  box-shadow: 0 4px 24px rgba(139,92,246,0.12);
+}
+
+.an-card h3 {
+  margin: 0 0 16px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text, #e2e8f0);
+  letter-spacing: 0.01em;
+}
+
+.an-card.wide {
+  grid-column: 1 / -1;
+}
+
+.chart-wrap {
+  position: relative;
+  height: 220px;
+  width: 100%;
+}
+
+.chart-wrap.tall {
+  height: 280px;
+}
+
+/* Pomodoro summary inside analytics */
+.pomo-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 10px 0;
+}
+
+.pomo-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: rgba(139,92,246,0.08);
+  font-size: 14px;
+  color: var(--text, #e2e8f0);
+}
+
+.pomo-row .lbl {
+  color: var(--text-muted, #94a3b8);
+  font-size: 13px;
+}
+
+.pomo-row .val {
+  font-size: 20px;
+  font-weight: 700;
+  color: #a78bfa;
+}
+
+/* Streak display */
+.streak-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 180px;
+  gap: 8px;
+}
+
+.streak-num-big {
+  font-size: 52px;
+  font-weight: 800;
+  background: linear-gradient(135deg, #f59e0b, #ef4444);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+}
+
+.streak-label {
+  font-size: 13px;
+  color: var(--text-muted, #94a3b8);
+  text-align: center;
+}
+
+.streak-today {
+  font-size: 13px;
+  font-weight: 600;
+  color: #34d399;
+  background: rgba(52,211,153,0.1);
+  padding: 4px 14px;
+  border-radius: 20px;
+  margin-top: 4px;
+}
+
+/* Empty state */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-muted, #94a3b8);
+}
+
+.empty-state .icon {
+  font-size: 48px;
+  margin-bottom: 12px;
+}
+
+.empty-state h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--text, #e2e8f0);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .analytics-grid {
+    grid-template-columns: 1fr;
+  }
+  .an-card.wide {
+    grid-column: 1;
+  }
+}

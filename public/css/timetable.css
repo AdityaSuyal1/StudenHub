@@ -1,0 +1,26 @@
+/* timetable.css */
+.tt-wrap { overflow-x: auto; }
+
+.color-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: 4px;
+}
+
+.color-dot {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 3px solid transparent;
+  transition: .15s;
+}
+
+.color-dot.selected { border-color: var(--text); }
+.color-dot.purple { background: var(--primary); }
+.color-dot.green  { background: var(--success); }
+.color-dot.yellow { background: var(--warning); }
+.color-dot.red    { background: var(--danger); }
+.color-dot.teal   { background: var(--accent); }

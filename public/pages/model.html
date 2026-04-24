@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>StudenHub — Model Papers</title>
+  <link rel="stylesheet" href="../css/style.css"/>
+  <link rel="stylesheet" href="../css/model.css"/>
+</head>
+<body>
+  <div class="topbar">
+    <div class="topbar-logo">🎓 StudenHub</div>
+    <div class="topbar-right">
+      <div class="user-badge"><div class="avatar" id="topbar-avatar">S</div><span class="user-name" id="topbar-name">Student</span></div>
+      <button class="btn-logout" id="logout-btn">Logout</button>
+    </div>
+  </div>
+  <div class="guest-banner" id="guest-banner">👤 Guest mode. <a onclick="window.location.href='../index.html'">Create a free account →</a></div>
+  <div class="app-body">
+    <aside class="sidebar">
+      <div class="nav-label">Main</div>
+      <a class="nav-item" data-page="dashboard" href="dashboard.html"><span class="nav-icon">📊</span> Dashboard</a>
+      <a class="nav-item" data-page="planner" href="planner.html"><span class="nav-icon">📅</span> Study Planner</a>
+      <a class="nav-item" data-page="notes" href="notes.html"><span class="nav-icon">📝</span> Notes</a>
+      <a class="nav-item" data-page="timetable" href="timetable.html"><span class="nav-icon">🕐</span> Timetable</a>
+      <a class="nav-item" data-page="assignments" href="assignments.html"><span class="nav-icon">✅</span> Assignments</a>
+      <div class="nav-label">Resources</div>
+      <a class="nav-item" data-page="pyq" href="pyq.html"><span class="nav-icon">📄</span> PYQ</a>
+      <a class="nav-item active" data-page="model" href="model.html"><span class="nav-icon">📋</span> Model Papers</a>
+      <div class="nav-label">Tools</div>
+      <a class="nav-item" data-page="pomodoro" href="pomodoro.html"><span class="nav-icon">⏱️</span> Pomodoro</a>
+      <a class="nav-item" data-page="flashcards" href="flashcards.html"><span class="nav-icon">🃏</span> Flashcards</a>
+      <a class="nav-item" data-page="grades" href="grades.html"><span class="nav-icon">📈</span> Grades</a>
+      <a class="nav-item" data-page="analytics" href="analytics.html"><span class="nav-icon">📉</span> Analytics</a>
+    </aside>
+    <main class="content" id="main-content">
+      <!-- Content built by model.js -->
+    </main>
+  </div>
+  <div id="toast"></div>
+  <script src="../js/api.js"></script>
+  <script src="../js/model.js"></script>
+</body>
+</html>

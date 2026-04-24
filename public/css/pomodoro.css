@@ -1,0 +1,18 @@
+/* pomodoro.css */
+.pomo-dots {
+  display: flex;
+  gap: 8px;
+}
+
+.pomo-dot {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  transition: .2s;
+}
+
+.pomo-dot.done {
+  background: var(--primary);
+  border-color: var(--primary);
+}

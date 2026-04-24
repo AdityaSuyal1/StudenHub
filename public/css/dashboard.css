@@ -1,0 +1,20 @@
+/* dashboard.css — extra styles specific to the dashboard page */
+
+.streak-num {
+  font-size: 38px;
+  font-weight: 800;
+  color: var(--warning);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.streak-sub {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 6px;
+}
+
+.mini-item-right {
+  margin-left: auto;
+  flex-shrink: 0;
+}

@@ -1,0 +1,4 @@
+/* assignments.css */
+.priority-high   { color: var(--danger); }
+.priority-medium { color: var(--warning); }
+.priority-low    { color: var(--success); }
