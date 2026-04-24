@@ -48,17 +48,24 @@ app.use(express.urlencoded({ extended: true, limit: '5mb' })); // fallback for f
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
 // ─── Helper: extract rows from Turso result ──────────────────
-// Turso returns { rows: [...], columns: [...] }
-// Each row is an array; we zip it with columns to get plain objects
+// Turso/@libsql returns integer columns as BigInt.
+// BigInt breaks JSON.stringify() and embeds as "123n" in innerHTML onclick attrs.
+// sanitizeVal converts every BigInt to a plain Number before we touch the data.
+function sanitizeVal(v) {
+  if (typeof v === 'bigint') return Number(v);
+  return v;
+}
+
 function toObjects(result) {
   if (!result || !result.rows) return [];
 
+  // @libsql/client Row objects look like plain objects but Object.keys() returns []
+  // because named properties are non-enumerable. Only numeric index access works.
+  // ALWAYS zip using result.columns + row[i].
   return result.rows.map(row => {
-    if (typeof row === 'object' && !Array.isArray(row)) return row;
-
-    let obj = {};
+    var obj = {};
     result.columns.forEach((col, i) => {
-      obj[col] = row[i];
+      obj[col] = sanitizeVal(row[i]);
     });
     return obj;
   });
