@@ -5,7 +5,7 @@
 var API_BASE =
   window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
     ? "http://localhost:10000"
-    : window.location.origin;   // automatically uses whatever domain the site is hosted on
+    : window.location.origin;  // automatically matches whatever host serves the frontend
 
 // ── Token management ────────────────────────────────────────
 var Auth = {
@@ -22,7 +22,7 @@ var Auth = {
     localStorage.removeItem('sh_token');
     localStorage.removeItem('sh_user');
   },
-  isGuest: function() { return localStorage.getItem('sh_guest') === 'true'; },
+  isGuest:  function() { return localStorage.getItem('sh_guest') === 'true'; },
   setGuest: function() { localStorage.setItem('sh_guest', 'true'); },
   clearGuest: function() { localStorage.removeItem('sh_guest'); },
   requireAuth: function() {
@@ -33,6 +33,8 @@ var Auth = {
 };
 
 // ── Generic fetch wrapper ────────────────────────────────────
+// ✅ FIXED: added .catch() so network errors show a toast instead of dying silently
+// ✅ FIXED: safe JSON parsing — if server returns HTML (502/504) we don't crash
 function apiCall(method, url, body) {
   var opts = {
     method: method,
@@ -42,14 +44,27 @@ function apiCall(method, url, body) {
   if (token) opts.headers['Authorization'] = 'Bearer ' + token;
   if (body)  opts.body = JSON.stringify(body);
 
-  return fetch(API_BASE + url, opts).then(function(r) {
-    if (r.status === 401) {
-      Auth.clearSession();
-      window.location.href = '../index.html';
-      return;
-    }
-    return r.json();
-  });
+  return fetch(API_BASE + url, opts)
+    .then(function(r) {
+      if (r.status === 401) {
+        Auth.clearSession();
+        window.location.href = '../index.html';
+        return Promise.reject('unauthorized');
+      }
+      // ✅ Safe JSON: if response isn't JSON (e.g. Render 502 HTML page), return error object
+      var contentType = r.headers.get('content-type') || '';
+      if (!contentType.includes('application/json')) {
+        return { error: 'Server error (' + r.status + '). Try again.' };
+      }
+      return r.json();
+    })
+    .catch(function(err) {
+      // ✅ Network failures (offline, CORS blocked, DNS failure) now surface as toasts
+      if (err === 'unauthorized') return null;
+      console.error('API error [' + method + ' ' + url + ']:', err);
+      showToast('Connection error — check your internet or try again.');
+      return null;
+    });
 }
 
 // Shortcuts

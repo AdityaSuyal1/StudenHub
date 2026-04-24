@@ -30,8 +30,21 @@ var app  = express();
 var PORT = process.env.PORT || 10000;
 var JWT_SECRET = process.env.JWT_SECRET || 'studenhub_secret_key_change_in_production';
 
-app.use(require('cors')({ origin: true, credentials: true }));
-app.use(express.json());
+// ─── CORS: must handle preflight OPTIONS before any route ────
+var cors = require('cors');
+var corsOptions = {
+  origin: true,                 // mirror request origin
+  credentials: true,
+  methods: ['GET','POST','PATCH','PUT','DELETE','OPTIONS'],
+  allowedHeaders: ['Content-Type','Authorization']
+};
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions)); // ← preflight for ALL routes (fixes POST JSON blocked online)
+
+// ─── Body parsers ────────────────────────────────────────────
+app.use(express.json({ limit: '5mb' }));
+app.use(express.urlencoded({ extended: true, limit: '5mb' })); // fallback for form-encoded bodies
+
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
 // ─── Helper: extract rows from Turso result ──────────────────
@@ -212,8 +225,17 @@ app.get('/api/assignments', requireLogin, async function(req, res) {
 app.post('/api/assignments', requireLogin, async function(req, res) {
   try {
     var b = req.body;
-    if (!b.title) return res.json({ error: 'Title is required.' });
-    var r = await db.execute({ sql: 'INSERT INTO assignments (user_id, title, subject, due_date, priority, notes) VALUES (?,?,?,?,?,?)', args: [req.user.id, b.title, b.subject||null, b.due_date||null, b.priority||'Medium', b.notes||null] });
+    if (!b || typeof b !== 'object') return res.status(400).json({ error: 'Invalid request body. Make sure Content-Type is application/json.' });
+    if (!b.title || !b.title.toString().trim()) return res.json({ error: 'Title is required.' });
+    var title    = b.title.toString().trim();
+    var subject  = b.subject  ? b.subject.toString().trim()  : null;
+    var due_date = b.due_date ? b.due_date.toString().trim() : null;
+    var priority = ['High','Medium','Low'].includes(b.priority) ? b.priority : 'Medium';
+    var notes    = b.notes    ? b.notes.toString().trim()    : null;
+    var r = await db.execute({
+      sql:  'INSERT INTO assignments (user_id, title, subject, due_date, priority, notes) VALUES (?,?,?,?,?,?)',
+      args: [req.user.id, title, subject, due_date, priority, notes]
+    });
     res.json({ success: true, id: Number(r.lastInsertRowid) });
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
